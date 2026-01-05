@@ -22,62 +22,17 @@ namespace UniversalLinkPeeker
         {
             InitializeComponent();
             InitializeWebView();
-
-            // Initial theme application
-            ApplySystemTheme();
-
-            // Listen for theme changes
-            Microsoft.Win32.SystemEvents.UserPreferenceChanged += (s, e) =>
-            {
-                if (e.Category == Microsoft.Win32.UserPreferenceCategory.General)
-                {
-                    Dispatcher.Invoke(() => ApplySystemTheme());
-                }
-            };
         }
 
-        private void ApplySystemTheme()
-        {
-            try
-            {
-                using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"))
-                {
-                    if (key != null)
-                    {
-                        object registryValueObject = key.GetValue("AppsUseLightTheme");
-                        if (registryValueObject != null)
-                        {
-                            int registryValue = (int)registryValueObject;
-                            bool isLightTheme = registryValue > 0;
+        // Removed manual ApplySystemTheme logic as it conflicts with DynamicResource binding
+        // The XAML now handles theme switching via DynamicResource and App.UpdateTheme()
 
-                            if (isLightTheme)
-                            {
-                                // Light Theme
-                                MainBorder.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-                                MainBorder.BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(229, 229, 229));
-                                UrlTitle.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-                                HeaderBorder.BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240));
-                                HeaderBorder.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(248, 249, 250));
-                                LoadingGrid.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-                                LoadingText.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-                            }
-                            else
-                            {
-                                // Dark Theme
-                                MainBorder.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(32, 32, 32));
-                                MainBorder.BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 64, 64));
-                                UrlTitle.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-                                HeaderBorder.BorderBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(50, 50, 50));
-                                HeaderBorder.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(41, 42, 45));
-                                LoadingGrid.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(32, 32, 32));
-                                LoadingText.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-                            }
-                        }
-                    }
-                }
-            }
-            catch { /* Fallback to default (Light) if registry access fails */ }
-        }
+        /* 
+        private void ApplySystemTheme() 
+        { 
+             // ... 
+        } 
+        */
 
         private async void InitializeWebView()
         {

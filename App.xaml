@@ -3,6 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:UniversalLinkPeeker">
     <Application.Resources>
-         
+        <!-- Default Brushes (Dark Theme Initial) -->
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#202124"/>
+        <SolidColorBrush x:Key="WindowBorderBrush" Color="#3C4043"/>
+        <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#292A2D"/>
+        <SolidColorBrush x:Key="PrimaryTextBrush" Color="#E8EAED"/>
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#9AA0A6"/>
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#3C4043"/>
+        <SolidColorBrush x:Key="SeparatorBrush" Color="#3C4043"/>
+        
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource ButtonHoverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
