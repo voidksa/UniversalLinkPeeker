@@ -8,11 +8,11 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows-0078D6.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+[![Latest Release](https://img.shields.io/github/v/release/voidk/UniversalLinkPeeker?label=latest%20version)](https://github.com/voidk/UniversalLinkPeeker/releases/latest)
 
 **Universal Link Peeker** redefines how you interact with links on Windows. Preview any URL instantly without opening a browser tab, simply by holding a trigger key.
 
-[**📥 Download Latest Version**](https://github.com/voidk/UniversalLinkPeeker/releases/latest)
+[![Download](https://img.shields.io/badge/Download-Latest-blue?logo=github)](https://github.com/voidk/UniversalLinkPeeker/releases/latest)
 
 ![Preview](screenshots/preview.png)
 
