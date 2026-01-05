@@ -17,12 +17,14 @@ namespace UniversalLinkPeeker
 
         private NotifyIcon _notifyIcon;
         private ContextMenuStrip _contextMenu;
+        private UpdateService _updateService;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             InitializeNotifyIcon();
+            _updateService = new UpdateService();
 
             _inputHook = new InputHookService();
             _textExtractor = new TextExtractionService();
@@ -78,11 +80,41 @@ namespace UniversalLinkPeeker
 
             _contextMenu.Items.Add(triggerMenu);
             _contextMenu.Items.Add("-");
+            var updateItem = new ToolStripMenuItem("Check for Updates", null, async (s, e) =>
+            {
+                var info = await _updateService.CheckForUpdateAsync();
+                if (info.IsUpdateAvailable)
+                {
+                    _notifyIcon.BalloonTipTitle = "Update Available";
+                    _notifyIcon.BalloonTipText = $"Latest: {info.LatestVersion}";
+                    _notifyIcon.ShowBalloonTip(4000);
+                    _notifyIcon.BalloonTipClicked += (o, args) => _updateService.OpenLatestRelease(info.Url);
+                }
+                else
+                {
+                    _notifyIcon.BalloonTipTitle = "Up To Date";
+                    _notifyIcon.BalloonTipText = "You are on the latest version.";
+                    _notifyIcon.ShowBalloonTip(3000);
+                }
+            });
+
+            _contextMenu.Items.Add(updateItem);
             _contextMenu.Items.Add("Exit", null, (s, e) => Shutdown());
 
             _notifyIcon.ContextMenuStrip = _contextMenu;
 
             ApplyThemeToContextMenu();
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                var info = await _updateService.CheckForUpdateAsync();
+                if (info.IsUpdateAvailable)
+                {
+                    _notifyIcon.BalloonTipTitle = "Update Available";
+                    _notifyIcon.BalloonTipText = $"Latest: {info.LatestVersion}";
+                    _notifyIcon.ShowBalloonTip(5000);
+                    _notifyIcon.BalloonTipClicked += (o, args) => _updateService.OpenLatestRelease(info.Url);
+                }
+            });
         }
 
         private void ApplyThemeToContextMenu()
