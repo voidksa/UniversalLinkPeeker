@@ -1,44 +1,53 @@
 # Universal Link Peeker
 
-Universal Link Peeker is a powerful utility for Windows that allows you to preview any link instantly without opening a new browser tab. Simply hover over a link and hold your configured trigger key to see a live preview.
+<div align="center">
 
-## Features
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Windows-0078D6.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
 
-- **Instant Preview**: Hover over any link (in any application) and hold the activation key to see a popup preview.
-- **Configurable Trigger**: Choose between `Shift` (default), `Ctrl`, or `Alt` keys via the system tray menu.
-- **Security First**: 
-  - Automatically blocks file downloads (`.exe`, `.zip`, etc.) to prevent malware.
-  - Prevents new windows/popups from opening within the preview.
-- **Scroll Support**: Use your mouse wheel to scroll up and down within the preview window without activating it.
-- **Copy Link**: Press `C` while previewing to copy the URL to your clipboard.
-- **Smart Positioning**: The preview window automatically positions itself near your mouse but stays within screen bounds.
+**Universal Link Peeker** redefines how you interact with links on Windows. Preview any URL instantly without opening a browser tab, simply by holding a trigger key.
 
-## Installation
+[**📥 Download Latest Version**](https://github.com/voidk/UniversalLinkPeeker/releases/latest)
 
-1. Download the latest release (`UniversalLinkPeeker-v1.0.0.zip`).
-2. Extract the ZIP file to a folder of your choice.
+![Preview](screenshots/preview.png)
+
+</div>
+
+## ✨ Key Features
+
+- **🚀 Instant Preview**: Hover over any link (in any application: Chrome, Discord, VS Code, Word, etc.) and hold your activation key to peek.
+- **🛡️ Security First**: Built-in protection blocks automatic file downloads (`.exe`, `.zip`) and popup windows to keep your system safe.
+- **📜 Seamless Scrolling**: Use your mouse wheel to scroll through the previewed page naturally.
+- **📋 Quick Copy**: Press `C` while previewing to instantly copy the URL to your clipboard.
+- **⚙️ Configurable**: Choose your preferred trigger key (`Shift`, `Ctrl`, or `Alt`) from the system tray menu.
+- **🎯 Smart Positioning**: The preview window intelligently positions itself near your cursor while staying fully visible on screen.
+
+## 📥 Installation
+
+1. Download the latest release: [**UniversalLinkPeeker-v1.0.0.zip**](https://github.com/voidk/UniversalLinkPeeker/releases/latest).
+2. Extract the ZIP file to any folder.
 3. Run `UniversalLinkPeeker.exe`.
 
-## Usage
+> **Note**: Requires [WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) (pre-installed on Windows 10/11).
 
-1. The application runs in the background. You will see an icon in the system tray.
-2. **To Preview**: Hover your mouse over a link in any application (browser, document, chat app, etc.).
-3. **Hold Shift** (or your configured key). The preview window will appear.
-4. **Scroll**: Use the mouse wheel to scroll the page.
-5. **Copy**: Press `C` to copy the link.
-6. **Release Key**: Release the key to close the preview.
+## 🎮 Usage
 
-## Configuration
+1. **Launch**: Run the app; it sits quietly in your system tray.
+2. **Hover**: Move your mouse over any link.
+3. **Peek**: Hold **Shift** (default) to open the preview.
+4. **Interact**: 
+   - **Scroll**: Use mouse wheel.
+   - **Copy**: Press `C`.
+5. **Dismiss**: Release the key to close.
+
+## ⚙️ Configuration
 
 Right-click the system tray icon to:
-- Change the **Trigger Key** (Shift, Ctrl, Alt).
+- Change Trigger Key (`Shift` / `Ctrl` / `Alt`).
 - Exit the application.
 
-## Requirements
+## 📄 License
 
-- Windows 10 or Windows 11.
-- WebView2 Runtime (usually pre-installed on modern Windows).
-
-## License
-
-MIT License.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+You are free to use, modify, and distribute this software while preserving the copyright notice.
