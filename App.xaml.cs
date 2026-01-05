@@ -206,6 +206,7 @@ namespace UniversalLinkPeeker
                     try
                     {
                         System.Windows.Clipboard.SetText(_currentUrl);
+                        _previewWindow.ShowNotification("Copied!");
                     }
                     catch { }
                 });

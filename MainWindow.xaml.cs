@@ -176,12 +176,25 @@ namespace UniversalLinkPeeker
         public async void ShowNotification(string message)
         {
             NotificationText.Text = message;
-            NotificationOverlay.Visibility = Visibility.Visible;
-            
-            // Wait for 1.5 seconds then fade out
-            await System.Threading.Tasks.Task.Delay(1500);
-            
-            NotificationOverlay.Visibility = Visibility.Collapsed;
+            try
+            {
+                // Open popup first so it measures
+                CopyPopup.IsOpen = true;
+
+                // Measure and center horizontally over MainBorder, and place slightly above bottom
+                CopyPopupBorder.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+                double contentWidth = CopyPopupBorder.ActualWidth > 0 ? CopyPopupBorder.ActualWidth : CopyPopupBorder.DesiredSize.Width;
+                double horizontalCenter = (MainBorder.ActualWidth - contentWidth) / 2;
+
+                CopyPopup.HorizontalOffset = horizontalCenter;
+                CopyPopup.VerticalOffset = -20; // lift above the bottom edge
+
+                await System.Threading.Tasks.Task.Delay(1500);
+            }
+            finally
+            {
+                CopyPopup.IsOpen = false;
+            }
         }
     }
 }
