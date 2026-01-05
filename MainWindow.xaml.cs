@@ -1,11 +1,23 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using Microsoft.Web.WebView2.Core;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UniversalLinkPeeker
 {
     public partial class MainWindow : Window
     {
+        // Simple AdBlock List
+        private static readonly HashSet<string> AdDomains = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "doubleclick.net", "googlesyndication.com", "googleadservices.com",
+            "adnxs.com", "criteo.com", "pubmatic.com", "rubiconproject.com",
+            "openx.net", "adsystem.com", "smartadserver.com",
+            "google-analytics.com", "facebook.net/tr", "hotjar.com"
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -21,6 +33,10 @@ namespace UniversalLinkPeeker
                 webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
                 webView.ZoomFactor = 0.6; // 60% zoom to see more content
 
+                // Privacy: Basic Ad & Tracker Blocker
+                webView.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
+                webView.CoreWebView2.WebResourceRequested += CoreWebView2_WebResourceRequested;
+
                 webView.NavigationCompleted += (s, e) =>
                 {
                     webView.ZoomFactor = 0.6;
@@ -30,7 +46,7 @@ namespace UniversalLinkPeeker
                 };
 
 
-                // Security: Prevent any downloads
+                // Security: Prevent any downloads (Enhanced)
                 webView.CoreWebView2.DownloadStarting += (s, e) =>
                 {
                     e.Cancel = true;
@@ -46,6 +62,17 @@ namespace UniversalLinkPeeker
             catch (Exception)
             {
                 // Silent fail or log? For now, silent.
+            }
+        }
+
+        private void CoreWebView2_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
+        {
+            if (e.Request.Uri == null) return;
+
+            string uri = e.Request.Uri.ToLowerInvariant();
+            if (AdDomains.Any(d => uri.Contains(d)))
+            {
+                e.Response = webView.CoreWebView2.Environment.CreateWebResourceResponse(null, 403, "Blocked", "");
             }
         }
 

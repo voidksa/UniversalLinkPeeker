@@ -18,9 +18,11 @@
 ## ✨ Key Features
 
 - **🚀 Instant Preview**: Hover over any link (in any application: Chrome, Discord, VS Code, Word, etc.) and hold your activation key to peek.
-- **🛡️ Security First**: Built-in protection blocks automatic file downloads (`.exe`, `.zip`) and popup windows to keep your system safe.
+- **🛡️ Native Ad & Tracker Blocker**: Automatically blocks ads and tracking scripts for faster, cleaner, and more private previews (similar to Brave Shield).
+- **🚫 Secure Mode**: Strictly blocks ALL file downloads (`.exe`, `.zip`, images, etc.) and popup windows to ensure a safe "look-only" experience.
+- **🌗 Theme Aware**: Automatically adapts to your system theme (Dark/Light mode) for a seamless native look.
 - **📜 Seamless Scrolling**: Use your mouse wheel to scroll through the previewed page naturally.
-- **📋 Quick Copy**: Press `C` while previewing to instantly copy the URL to your clipboard.
+- **📋 Visual Copy**: Press `C` while previewing to instantly copy the URL, with a clear "Copied!" notification.
 - **⚙️ Configurable**: Choose your preferred trigger key (`Shift`, `Ctrl`, or `Alt`) from the system tray menu.
 - **🎯 Smart Positioning**: The preview window intelligently positions itself near your cursor while staying fully visible on screen.
 
