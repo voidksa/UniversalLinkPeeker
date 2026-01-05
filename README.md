@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="app.ico" alt="Universal Link Peeker" width="96" />
+</p>
+
 # Universal Link Peeker
 
 <div align="center">

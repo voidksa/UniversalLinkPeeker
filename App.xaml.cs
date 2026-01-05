@@ -1,6 +1,9 @@
 using System;
 using System.Windows;
 using UniversalLinkPeeker.Services;
+using Microsoft.Win32;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace UniversalLinkPeeker
 {
@@ -12,7 +15,8 @@ namespace UniversalLinkPeeker
         private bool _isActivationKeyHeld = false;
         private string _currentUrl;
 
-        private System.Windows.Forms.NotifyIcon _notifyIcon;
+        private NotifyIcon _notifyIcon;
+        private ContextMenuStrip _contextMenu;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -31,21 +35,40 @@ namespace UniversalLinkPeeker
             _inputHook.MouseMoved += OnMouseMoved;
             _inputHook.MouseWheel += OnMouseWheel;
             _inputHook.CopyCommandTriggered += OnCopyCommandTriggered;
+
+            SystemEvents.UserPreferenceChanged += (s, args) => ApplyThemeToContextMenu();
         }
 
         private void InitializeNotifyIcon()
         {
-            _notifyIcon = new System.Windows.Forms.NotifyIcon();
-            _notifyIcon.Icon = System.Drawing.SystemIcons.Information; // Placeholder icon
+            _notifyIcon = new NotifyIcon();
+            try
+            {
+                // Use the application's own icon (embedded resource)
+                var iconPath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    _notifyIcon.Icon = Icon.ExtractAssociatedIcon(iconPath);
+                }
+                else
+                {
+                    _notifyIcon.Icon = SystemIcons.Application;
+                }
+            }
+            catch
+            {
+                _notifyIcon.Icon = SystemIcons.Application;
+            }
+
             _notifyIcon.Visible = true;
             _notifyIcon.Text = "Universal Link Peeker";
 
-            var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+            _contextMenu = new ContextMenuStrip();
 
-            var triggerMenu = new System.Windows.Forms.ToolStripMenuItem("Trigger Key");
-            var shiftItem = new System.Windows.Forms.ToolStripMenuItem("Shift", null, (s, e) => SetTriggerKey(TriggerKey.Shift));
-            var ctrlItem = new System.Windows.Forms.ToolStripMenuItem("Ctrl", null, (s, e) => SetTriggerKey(TriggerKey.Ctrl));
-            var altItem = new System.Windows.Forms.ToolStripMenuItem("Alt", null, (s, e) => SetTriggerKey(TriggerKey.Alt));
+            var triggerMenu = new ToolStripMenuItem("Trigger Key");
+            var shiftItem = new ToolStripMenuItem("Shift", null, (s, e) => SetTriggerKey(TriggerKey.Shift));
+            var ctrlItem = new ToolStripMenuItem("Ctrl", null, (s, e) => SetTriggerKey(TriggerKey.Ctrl));
+            var altItem = new ToolStripMenuItem("Alt", null, (s, e) => SetTriggerKey(TriggerKey.Alt));
 
             shiftItem.Checked = true; // Default
 
@@ -53,18 +76,79 @@ namespace UniversalLinkPeeker
             triggerMenu.DropDownItems.Add(ctrlItem);
             triggerMenu.DropDownItems.Add(altItem);
 
-            contextMenu.Items.Add(triggerMenu);
-            contextMenu.Items.Add("-");
-            contextMenu.Items.Add("Exit", null, (s, e) => Shutdown());
+            _contextMenu.Items.Add(triggerMenu);
+            _contextMenu.Items.Add("-");
+            _contextMenu.Items.Add("Exit", null, (s, e) => Shutdown());
 
-            _notifyIcon.ContextMenuStrip = contextMenu;
+            _notifyIcon.ContextMenuStrip = _contextMenu;
+
+            ApplyThemeToContextMenu();
+        }
+
+        private void ApplyThemeToContextMenu()
+        {
+            if (_contextMenu == null) return;
+
+            bool isDark = IsDarkMode();
+
+            if (isDark)
+            {
+                _contextMenu.Renderer = new ToolStripProfessionalRenderer(new DarkColorTable());
+                _contextMenu.ForeColor = Color.White;
+                foreach (ToolStripItem item in _contextMenu.Items)
+                {
+                    UpdateItemColor(item, Color.White, Color.FromArgb(40, 40, 40));
+                }
+            }
+            else
+            {
+                _contextMenu.Renderer = new ToolStripProfessionalRenderer(new ProfessionalColorTable()); // Default
+                _contextMenu.ForeColor = Color.Black;
+                foreach (ToolStripItem item in _contextMenu.Items)
+                {
+                    UpdateItemColor(item, Color.Black, Color.White);
+                }
+            }
+        }
+
+        private void UpdateItemColor(ToolStripItem item, Color foreColor, Color backColor)
+        {
+            item.ForeColor = foreColor;
+            // item.BackColor = backColor; // Renderer handles background mostly, but setting it helps in some modes
+            if (item is ToolStripMenuItem menuItem)
+            {
+                foreach (ToolStripItem subItem in menuItem.DropDownItems)
+                {
+                    UpdateItemColor(subItem, foreColor, backColor);
+                }
+            }
+        }
+
+        private bool IsDarkMode()
+        {
+            try
+            {
+                using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"))
+                {
+                    if (key != null)
+                    {
+                        var val = key.GetValue("AppsUseLightTheme");
+                        if (val != null)
+                        {
+                            return (int)val == 0;
+                        }
+                    }
+                }
+            }
+            catch { }
+            return false; // Default to Light
         }
 
         private void SetTriggerKey(TriggerKey key)
         {
             _inputHook.CurrentTriggerKey = key;
-            var triggerMenu = (System.Windows.Forms.ToolStripMenuItem)_notifyIcon.ContextMenuStrip.Items[0];
-            foreach (System.Windows.Forms.ToolStripMenuItem item in triggerMenu.DropDownItems)
+            var triggerMenu = (ToolStripMenuItem)_notifyIcon.ContextMenuStrip.Items[0];
+            foreach (ToolStripMenuItem item in triggerMenu.DropDownItems)
             {
                 item.Checked = item.Text == key.ToString();
             }
@@ -152,5 +236,20 @@ namespace UniversalLinkPeeker
             _textExtractor?.Dispose();
             base.OnExit(e);
         }
+    }
+
+    public class DarkColorTable : ProfessionalColorTable
+    {
+        public override Color MenuItemSelected => Color.FromArgb(60, 60, 60);
+        public override Color MenuItemBorder => Color.FromArgb(60, 60, 60);
+        public override Color MenuBorder => Color.FromArgb(40, 40, 40);
+        public override Color MenuItemPressedGradientBegin => Color.FromArgb(40, 40, 40);
+        public override Color MenuItemPressedGradientEnd => Color.FromArgb(40, 40, 40);
+        public override Color MenuItemSelectedGradientBegin => Color.FromArgb(60, 60, 60);
+        public override Color MenuItemSelectedGradientEnd => Color.FromArgb(60, 60, 60);
+        public override Color ToolStripDropDownBackground => Color.FromArgb(40, 40, 40);
+        public override Color ImageMarginGradientBegin => Color.FromArgb(40, 40, 40);
+        public override Color ImageMarginGradientMiddle => Color.FromArgb(40, 40, 40);
+        public override Color ImageMarginGradientEnd => Color.FromArgb(40, 40, 40);
     }
 }

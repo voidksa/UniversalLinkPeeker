@@ -8,12 +8,57 @@
         ShowActivated="False"
         AllowsTransparency="True" Background="Transparent"
         Visibility="Hidden">
-    <Border CornerRadius="10" Background="White" BorderBrush="#DDDDDD" BorderThickness="1">
+
+    <Window.Resources>
+        <!-- Light Theme -->
+        <SolidColorBrush x:Key="LightBackground" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="LightBorder" Color="#E5E5E5"/>
+        <SolidColorBrush x:Key="LightHeaderBackground" Color="#F8F9FA"/>
+        <SolidColorBrush x:Key="LightText" Color="#5F6368"/>
+        
+        <!-- Dark Theme -->
+        <SolidColorBrush x:Key="DarkBackground" Color="#202124"/>
+        <SolidColorBrush x:Key="DarkBorder" Color="#3C4043"/>
+        <SolidColorBrush x:Key="DarkHeaderBackground" Color="#292A2D"/>
+        <SolidColorBrush x:Key="DarkText" Color="#E8EAED"/>
+    </Window.Resources>
+
+    <Border Name="MainBorder" CornerRadius="12" BorderThickness="1">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="5" Direction="270" Opacity="0.2"/>
         </Border.Effect>
         <Grid>
-            <wv2:WebView2 Name="webView" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Name="HeaderBorder" Grid.Row="0" CornerRadius="12,12,0,0" Padding="12,8" BorderThickness="0,0,0,1">
+                <Grid>
+                    <TextBlock Name="UrlTitle" Text="Loading..." VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+            </Border>
+
+            <!-- Content -->
+            <Grid Grid.Row="1">
+                <!-- Loading State -->
+                <Grid Name="LoadingGrid" Panel.ZIndex="1">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <ProgressBar IsIndeterminate="True" Width="150" Height="4" BorderThickness="0" Background="#F1F3F4" Foreground="#1A73E8"/>
+                        <TextBlock Name="LoadingText" Text="Loading Preview..." Margin="0,12,0,0" HorizontalAlignment="Center" FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- WebView -->
+                <!-- Visibility Hidden initially to hide white flash -->
+                <wv2:WebView2 Name="webView" Visibility="Hidden" />
+            </Grid>
+
+            <!-- Notification Overlay -->
+            <Border Name="NotificationOverlay" Grid.Row="1" Background="#333333" CornerRadius="8" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20" Padding="16,8" Visibility="Collapsed" IsHitTestVisible="False">
+                <TextBlock Name="NotificationText" Text="Copied!" Foreground="White" FontWeight="SemiBold" FontSize="14"/>
+            </Border>
         </Grid>
     </Border>
 </Window>

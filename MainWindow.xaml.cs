@@ -24,7 +24,11 @@ namespace UniversalLinkPeeker
                 webView.NavigationCompleted += (s, e) =>
                 {
                     webView.ZoomFactor = 0.6;
+                    // Show WebView and hide loading when ready
+                    webView.Visibility = Visibility.Visible;
+                    LoadingGrid.Visibility = Visibility.Collapsed;
                 };
+
 
                 // Security: Prevent any downloads
                 webView.CoreWebView2.DownloadStarting += (s, e) =>
@@ -52,6 +56,21 @@ namespace UniversalLinkPeeker
                 // Navigate to a safe error page or just blank
                 url = "about:blank";
             }
+
+            // Update Header
+            try
+            {
+                Uri uri = new Uri(url);
+                UrlTitle.Text = uri.Host; // Show domain in header
+            }
+            catch
+            {
+                UrlTitle.Text = "Link Preview";
+            }
+
+            // Reset UI state for loading
+            LoadingGrid.Visibility = Visibility.Visible;
+            webView.Visibility = Visibility.Hidden; // Hide until loaded
 
             if (webView.CoreWebView2 != null)
             {
@@ -152,6 +171,17 @@ namespace UniversalLinkPeeker
 
             this.Left = left;
             this.Top = top;
+        }
+
+        public async void ShowNotification(string message)
+        {
+            NotificationText.Text = message;
+            NotificationOverlay.Visibility = Visibility.Visible;
+            
+            // Wait for 1.5 seconds then fade out
+            await System.Threading.Tasks.Task.Delay(1500);
+            
+            NotificationOverlay.Visibility = Visibility.Collapsed;
         }
     }
 }
