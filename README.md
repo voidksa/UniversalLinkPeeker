@@ -1,20 +1,17 @@
-<p align="center">
-  <img src="screenshots/app.png" alt="Universal Link Peeker" width="96" />
-</p>
-
-# Universal Link Peeker
-
 <div align="center">
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Platform](https://img.shields.io/badge/platform-Windows-0078D6.svg)
-[![Latest Release](https://img.shields.io/github/v/release/voidksa/UniversalLinkPeeker?label=latest%20version)](https://github.com/voidksa/UniversalLinkPeeker/releases/latest)
+  <img src="screenshots/app.png" width="128" height="128" />
 
-**Universal Link Peeker** redefines how you interact with links on Windows. Preview any URL instantly without opening a browser tab, simply by holding a trigger key.
+  # Universal Link Peeker
 
-[![Download](https://img.shields.io/badge/Download-Latest-blue?logo=github)](https://github.com/voidksa/UniversalLinkPeeker/releases/latest)
+  [![Download](https://img.shields.io/github/v/release/voidksa/UniversalLinkPeeker?label=Download&style=for-the-badge&color=2CB67D&logo=windows)](https://github.com/voidksa/UniversalLinkPeeker/releases/latest)
+  [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-![Preview](screenshots/preview.png)
+  **Universal Link Peeker redefines how you interact with links on Windows. Preview any URL instantly without opening a browser tab, simply by holding a trigger key.**
+
+  <br/>
+  <img src="screenshots/preview.png" alt="Universal Link Peeker Screenshot" width="800" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);"/>
+  <br/>
 
 </div>
 
