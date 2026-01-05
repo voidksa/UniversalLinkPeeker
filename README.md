@@ -10,7 +10,7 @@
   **Universal Link Peeker redefines how you interact with links on Windows. Preview any URL instantly without opening a browser tab, simply by holding a trigger key.**
 
   <br/>
-  <img src="screenshots/preview1.png" alt="Universal Link Peeker Screenshot" width="800" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);"/>
+  <img src="screenshots/preview.png" alt="Universal Link Peeker Screenshot" width="800" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);"/>
   <br/>
 
 </div>
